@@ -1,0 +1,28 @@
+{
+  "name": "becode-node-socketio",
+  "version": "1.0.0",
+  "description": "my first socket.io app",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AnkePe/becode-node-socketio.git"
+  },
+  "author": "AP",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AnkePe/becode-node-socketio/issues"
+  },
+  "homepage": "https://github.com/AnkePe/becode-node-socketio#readme",
+  "dependencies": {
+    "express": "^4.16.4",
+    "nodemon": "^1.4.1",
+    "socket.io": "^2.2.0"
+  },
+  "engines": {
+    "node": "11.9.0"
+  }
+}
