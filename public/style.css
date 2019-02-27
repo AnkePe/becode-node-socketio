@@ -1,0 +1,9 @@
+body {
+   background-color: lightsteelblue
+}
+#all_users {
+    border: 1px grey solid;
+    border-radius: 10px;
+    background-color: white;
+    padding: 10px;
+}

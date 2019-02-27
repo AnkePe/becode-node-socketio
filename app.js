@@ -23,31 +23,41 @@ server = app.listen( port, () => {
 const io = require('socket.io')(server)
 
 //lijst van usernames maken
-const allUsernames = [] //lege array
+let allUsernames = [] //lege array
 
 //listen on every connection
 io.on('connection', (socket) => {
-    console.log(`New user connected`)
+    console.log(`socket connected`)
+    // console.log(allUsernames)
 
     //default username
-    socket.username = "Anoniem"
-
-    //listen on change_username
-    socket.on('change_username', (data, callback) => {
-        socket.username = data.username
-        if(allUsernames.indexOf(socket.username != -1)) {
-            callback(false)
-        } else {
-            callback(true)
-            allUsernames.push(socket.username)
-            updateAllUsernames()
-        }
-    })
+    // socket.username = "Anoniem"
 
     //function updateAllUsernames
     const updateAllUsernames = () => {
         io.sockets.emit('allUsernames', allUsernames)
     }
+
+    //listen on change_username
+    socket.on('change_username', (data, callback) => {
+        
+        socket.username = data.username
+        console.log(socket.username)
+        console.log(allUsernames)
+        if(allUsernames.indexOf(socket.username) !== -1) {
+            callback(false)
+        } else {
+            callback(true)
+            // socket.username = data.username
+            console.log(socket.username)
+            allUsernames.push(socket.username)
+            console.log(allUsernames)
+            updateAllUsernames()
+            
+        }
+    })
+
+
     //listen on new_message
     socket.on('new_message', (data) => {
         //broadcast the new message => we call the sockets property of io = all sockets connected
@@ -61,12 +71,14 @@ io.on('connection', (socket) => {
 
     //listen on disconnect
     socket.on('disconnect', (data) => {
-        // if(!socket.username) {
-        //     console.log('disconnected')
-        //     return
-        // }
+        if(!socket.username) {
+            console.log('disconnected')
+            return
+        }
+        // username socket verwijderen uit de lijst
         allUsernames.splice(allUsernames.indexOf(socket.username), 1)
         updateAllUsernames()
+        console.log(allUsernames)
 
     })
 
