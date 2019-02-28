@@ -3,6 +3,10 @@ $(() => {
     //make connection
     const socket = io.connect('http://localhost:3000')
 
+    //make namespaces
+    const chat01 = io.connect('http://localhost:3000/chat01')
+    const chat02 = io.connect('http://localhost:3000/chat02')
+
     //buttons and inputs
 	const message = $("#message")
 	const username = $("#username")
@@ -62,6 +66,11 @@ $(() => {
     socket.on('typing', (data) => {
         feedback.html(`<p><i>${data.username} is typing a message...</i></p>`)
 
+    })
+
+    //Chat 1 sockets
+    chat01.on('connectionMessage', message => {
+        $("h2").html(message)
     })
 
 })

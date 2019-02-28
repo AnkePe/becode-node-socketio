@@ -11,7 +11,13 @@ app.use(express.static('public'))   //roept de files aan uit de folder 'public'
 
 //routes
 app.get ('/', (req,res) => {
-    res.sendFile('index')
+    res.sendFile(__dirname + '/public/index.html')
+})
+app.get ('/chat01', (req,res) => {
+    res.sendFile(__dirname + '/public/chat01.html')
+})
+app.get ('/chat02', (req,res) => {
+    res.sendFile(__dirname + '/public/chat02.html')
 })
 
 //listening on port
@@ -21,6 +27,11 @@ server = app.listen( port, () => {
 
 //socket io gebruiken
 const io = require('socket.io')(server)
+
+//namespaces socket io
+const indexUsers = io.of('/')
+const chat01Users = io.of('/chat01')
+const chat02Users = io.of('/chat_02')
 
 //lijst van usernames maken
 let allUsernames = [] //lege array
@@ -57,7 +68,6 @@ io.on('connection', (socket) => {
         }
     })
 
-
     //listen on new_message
     socket.on('new_message', (data) => {
         //broadcast the new message => we call the sockets property of io = all sockets connected
@@ -79,7 +89,11 @@ io.on('connection', (socket) => {
         allUsernames.splice(allUsernames.indexOf(socket.username), 1)
         updateAllUsernames()
         console.log(allUsernames)
-
     })
 
 })
+
+//Chat 1 sockets
+chat01Users.on('connection', socket => {
+    socket.emit('connectionMessage', 'Welcome to Chatroom 1');
+});
